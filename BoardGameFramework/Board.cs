@@ -13,4 +13,27 @@ public abstract class Board {
     Cols = cols;
     grid = new string?[rows, cols];
   }
+
+  public bool IsValidMove(int row, int col) {
+  }
+
+  public void PlaceMove(int row, int col, string value) {
+  }
+
+  public void RevertMove(int row, int col) {
+
+  }
+
+  public bool IsCellEmpty(int row, int col) {
+
+  }
+
+  public string? GetCell(int row, int col) {
+
+  }
+
+  // Abstract method that needs to be implemented by individual subclasses
+  public abstract bool CheckWin()
+
+
 }
