@@ -33,7 +33,7 @@ public abstract class Board {
   }
 
   // Abstract method that needs to be implemented by individual subclasses
-  public abstract bool CheckWin()
+  public abstract bool CheckWin();
 
 
 }
