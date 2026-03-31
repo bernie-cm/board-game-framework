@@ -7,7 +7,7 @@ public abstract class Board {
   public int Rows { get; }
   public int Cols { get; }
 
-  // Since Board is abstract, no-one should be able to instantiate a Board directly so it's proetected
+  // Since Board is abstract, no-one should be able to instantiate a Board directly so the constructor is proetected
   protected Board(int rows, int cols) {
     Rows = rows;
     Cols = cols;
@@ -15,6 +15,15 @@ public abstract class Board {
   }
 
   public bool IsValidMove(int row, int col) {
+    // This method checks if a piece in the game can be placed in a certain cell
+    // It checks two things that must be true: position within bounds, and the cell is null (i.e., empty)
+    if (row >= 0 && row < Rows && col >= 0 && col < Cols && grid[row, col] == null)
+    {
+      return true;
+    } else
+    {
+      return false;
+    }
   }
 
   public void PlaceMove(int row, int col, string value) {
