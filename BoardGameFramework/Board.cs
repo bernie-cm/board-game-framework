@@ -36,16 +36,18 @@ public abstract class Board {
   }
   // Method checks if the position is empty, and returns false if there's a value
   public bool IsCellEmpty(int row, int col) => grid[row, col] == null;
-
-
-  
-
-  public string? GetCell(int row, int col) {
-
+  public string? GetCell(int row, int col)
+  {
+    // Method used to read cell values for rendering by ConsoleDisplay.ShowBoard()
+    // First need to check if the position requested is within bounds
+    if (row >= 0 && row < Rows && col >= 0 && col < Cols)
+    {
+      return grid[row, col];
+    } else
+    {
+      return null; // If out of bounds, return null
+    }
   }
-
   // Abstract method that needs to be implemented by individual subclasses
   public abstract bool CheckWin();
-
-
 }
