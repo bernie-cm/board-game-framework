@@ -43,11 +43,27 @@ public abstract class Game
     }
     public void UndoMove()
     {
-        //Calls historyManager to undo the last move. Switches player back
+        //First check if undo is possible, then call historyManager to undo the last move
+        if (historyManager.CanUndo())
+        {
+            historyManager.Undo();
+            SwitchPlayer(); // Return back to the previous player
+        } else
+        {
+            display.ShowMessage("No moves to undo.");
+        }
     }
     public void RedoMove()
     {
-        // Calls historyManager to redo. Switches player forward.
+        //First check if redo is possible, then call historyManager to redo the last move
+        if (historyManager.CanRedo())
+        {
+            historyManager.Redo();
+            SwitchPlayer(); // Go forward to the next player
+        } else
+        {
+            display.ShowMessage("No moves to redo.");
+        }
     }
     public void SaveGame(string filePath)
     {
