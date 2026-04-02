@@ -1,7 +1,6 @@
 namespace BoardGameFramework;
 
-public abstract class Game
-{
+public abstract class Game {
     protected Board board;
     protected Player currentPlayer;
     protected List<Player> players = new List<Player>();
