@@ -21,13 +21,15 @@ public class HumanPlayer : Player
             {
                 display.ShowMessage("Input is not valid. Please enter a number.");
                 continue;
-            }   
+            }
+            row -= 1; //I prefer the row to start at 1 but didn't want to change entire codebase
             string colInput = display.GetInput("Enter col: "); // This returns a string
             if (!int.TryParse(colInput, out int col))
             {
                 display.ShowMessage("Input is not valid. Please enter a number.");
                 continue;
-            }   
+            }
+            col -= 1; //I prefer the col to start at 1 but didn't want to change entire codebase
             string valueInput = display.GetInput("Enter value: "); // This returns a string for the value and doesn't need to be parsed for an int
             if (!board.IsValidMove(row, col))
             {
