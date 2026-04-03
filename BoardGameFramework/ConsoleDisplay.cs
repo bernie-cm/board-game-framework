@@ -1,57 +1,57 @@
-using System.Drawing;
-
 namespace BoardGameFramework;
 
 public class ConsoleDisplay : IDisplay
 {
+    /*
+    ConsoleDisplay is the only class in the entire framework that uses Console.WriteLine and Console.ReadLine. 
+    Every other class communicates with the user through this interface.
+    */
     public void ShowBoard(Board board)
     {
-        Console.WriteLine();
-        for (int row = 0; row < board.Rows; row++)
-        {
-            for (int col = 0; col < board.Cols; col++)
-            {
-                if (col + 1 == board.Cols)
-                {
-                    if (board.GetCell(row, col) == null) Console.Write("  ");
-                    else Console.Write(" " + board.GetCell(row, col));
+        // Method displays the board to the user
+        // loop through board.Rows and board.Cols
+            // each iteration call board.GetCell(row, col) for every row and column
+                // print the grid
+        // Display the board with separators. Empty cells show "." Filled cells should show the number
+        for (int row = 0; row < board.Rows; row++) {
+            for (int col = 0; col < board.Cols; col++) {
+                if (board.IsCellEmpty(row, col)) {
+                    Console.Write(" . ");
+                } else {
+                    Console.Write($" {board.GetCell(row, col)} ");
                 }
-                else
-                {
-                    if (board.GetCell(row, col) == null) Console.Write("  ");
-                    else Console.Write(" " + board.GetCell(row, col));
-                    Console.Write(" |");
+                if (col < board.Cols - 1) {
+                    Console.Write(" | ");
                 }
             }
-            Console.WriteLine();
-            if (row + 1 != board.Cols)
-            {
-                for (int i = 0; i < (4 * board.Cols); i++) Console.Write("_");
-                Console.WriteLine();
-                for (int i = 0; i < (4 * board.Cols); i++) Console.Write(" ");
-                Console.WriteLine();
+            Console.WriteLine(); // Prints a new line after each row
+            // Separator line between rows
+            if (row < board.Rows - 1) {
+                int width = (board.Cols * 3) + ((board.Cols - 1) * 3);
+                Console.WriteLine(new string('-', width));
             }
         }
-        Console.WriteLine();
     }
     public void ShowMessage(string message)
     {
+        // General purpose message to the user
         Console.WriteLine(message);
     }
-
     public void ShowResult(string result)
     {
-        Console.WriteLine($"\n=== {result} ===");
+        // Display end-of-game result to the user, e.g., winner announcement or if there's a tie
+        Console.WriteLine(result);
     }
-
-    public void ShowHelp(string help)
+    public void ShowHelp(string helpText)
     {
-        Console.WriteLine($"\n[Help] {help}");
+        // Display the help menu to the user
+        Console.WriteLine(helpText);
     }
-
     public string GetInput(string prompt)
     {
-        Console.Write(prompt);
-        return Console.ReadLine() ?? string.Empty;
+        // Method shows a prompt and return the user's input
+        Console.Write(prompt); // User types on the same line
+        return Console.ReadLine();
     }
+
 }
