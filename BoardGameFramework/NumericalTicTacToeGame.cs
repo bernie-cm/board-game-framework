@@ -1,26 +1,5 @@
 namespace BoardGameFramework;
 
-/// <summary>
-/// Concrete implementation of Numerical Tic-Tac-Toe.
-///
-/// Setup:
-///   - 3x3 board, two players.
-///   - Player 1 places ODD numbers  (1, 3, 5, 7, 9).
-///   - Player 2 places EVEN numbers (2, 4, 6, 8).
-///   - Numbers may never be reused.
-///
-/// Win condition:
-///   - Any row, column or diagonal sums to exactly 15.
-///
-/// Draw condition:
-///   - All 9 cells are filled with no line summing to 15.
-///
-/// Each turn the active player may:
-///   - Place a number  →  enter row, col, value
-///   - Undo last move  →  enter "undo"
-///   - Redo last move  →  enter "redo"
-///   - Save the game   →  enter "save"
-/// </summary>
 public class NumericalTicTacToeGame : Game
 {
     private NumericalTicTacToeBoard _nttBoard;
@@ -39,8 +18,6 @@ public class NumericalTicTacToeGame : Game
         board = _nttBoard;
     }
 
-    // ── Template-method overrides ─────────────────────────────────────────────
-
     protected override void InitialiseGame()
     {
         _nttBoard = new NumericalTicTacToeBoard();
@@ -48,9 +25,7 @@ public class NumericalTicTacToeGame : Game
         _winner = null;
         historyManager.Clear();
 
-        // Player 1 → odd numbers, Player 2 → even numbers.
-        // GamePiece is used here purely as a label shown in messages;
-        // the actual pieces placed are the numbers chosen each turn.
+        // GamePiece is used here purely as a label shown in messages. The actual pieces placed are the numbers chosen each turn.
         players.Clear();
         players.Add(new HumanPlayer(1, "Odd"));
         players.Add(new HumanPlayer(2, "Even"));
@@ -108,15 +83,8 @@ public class NumericalTicTacToeGame : Game
                 continue;
             }
 
-            // ── Delegate move input to the player ────────────────────────────
-            // MakeMove handles prompting, parsing, 1-based conversion, bounds
-            // checking and confirming the cell is empty. It loops internally
-            // until those conditions are met, then returns (row, col, value).
             var (row, col, value) = currentPlayer.MakeMove(board, display);
 
-            // ── NTT-specific validation on top of the generic move ────────────
-            // HumanPlayer only knows about Board, so odd/even and number-range
-            // rules are enforced here where we have access to NumericalTicTacToeBoard.
             if (!int.TryParse(value, out int number))
             {
                 display.ShowMessage("Value must be a whole number between 1 and 9.");
@@ -144,7 +112,6 @@ public class NumericalTicTacToeGame : Game
                 continue;
             }
 
-            // Valid move — execute through HistoryManager so undo/redo works.
             var command = new MoveCommand(_nttBoard, row, col, number.ToString());
             historyManager.Execute(command);
             return;
@@ -155,7 +122,6 @@ public class NumericalTicTacToeGame : Game
     {
         if (_nttBoard.CheckWin())
         {
-            // The player who just moved is still currentPlayer at this point.
             _winner = currentPlayer;
             return true;
         }
@@ -179,12 +145,6 @@ public class NumericalTicTacToeGame : Game
             display.ShowResult("It's a draw! No line sums to 15.");
     }
 
-    // ── SaveData support ──────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Restores board state and player list from a SaveData snapshot.
-    /// Called by SaveData.RestoreGame after the game object is constructed.
-    /// </summary>
     public void RestoreFromSaveData(SaveData data)
     {
         _nttBoard = new NumericalTicTacToeBoard();
@@ -207,21 +167,15 @@ public class NumericalTicTacToeGame : Game
         players.Clear();
         foreach (var pd in data.Players)
         {
-            Player p = pd.IsHuman
-                ? new HumanPlayer(pd.PlayerNumber, pd.GamePiece)
-                : (Player)new HumanPlayer(pd.PlayerNumber, pd.GamePiece); // extend for ComputerPlayer
+            Player p = pd.IsHuman ? new HumanPlayer(pd.PlayerNumber, pd.GamePiece) : (Player)new HumanPlayer(pd.PlayerNumber, pd.GamePiece); // extend for ComputerPlayer
             players.Add(p);
         }
 
-        currentPlayer = players.Count > data.CurrentPlayerIndex
-            ? players[data.CurrentPlayerIndex]
-            : players[0];
+        currentPlayer = players.Count > data.CurrentPlayerIndex ? players[data.CurrentPlayerIndex] : players[0];
     }
 
     public override SaveData ToSaveData()
     {
-        // Snapshot the grid as a List<List<string?>> — System.Text.Json does
-        // not support 2D arrays, so we convert row by row.
         var gridCopy = new List<List<string?>>();
         for (int r = 0; r < _nttBoard.Rows; r++)
         {

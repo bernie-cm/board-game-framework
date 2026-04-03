@@ -1,8 +1,5 @@
 namespace BoardGameFramework;
 
-/// <summary>
-/// Command pattern: encapsulates a single board move with Execute/Undo support.
-/// </summary>
 public class MoveCommand : ICommand
 {
     private readonly Board _board;
