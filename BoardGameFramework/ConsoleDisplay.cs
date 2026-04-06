@@ -1,4 +1,6 @@
-namespace BoardGameFramework;
+using BoardGameFramework.Core;
+
+namespace BoardGameUI;
 
 public class ConsoleDisplay : IDisplay
 {

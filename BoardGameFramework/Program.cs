@@ -1,4 +1,5 @@
-﻿using BoardGameFramework;
+﻿using BoardGameFramework.Games;
+using BoardGameUI;
 
 var display = new ConsoleDisplay();
 var factory = new GameFactory();

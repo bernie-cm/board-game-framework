@@ -1,14 +1,16 @@
-namespace BoardGameFramework;
+namespace BoardGameFramework.Core;
 
+// Abstract base class for all player types in the framework.
+// Holds the properties shared by every player and declares MakeMove so every subclass provides its own input logic.
 public abstract class Player {
-    // Abstract class from which HumanPlayer and ComputerPlayer will inherit
     public int PlayerNumber { get; }
     public string GamePiece { get; }
+
     protected Player(int playerNumber, string gamePiece) {
         PlayerNumber = playerNumber;
         GamePiece = gamePiece;
     }
-    // Need an abstract method called makeMove so that all inherited classes are forced to implement it
-    // Each player type (Human, Computer) implements its own logic
+
+    // Each player type, Human or Computer, implements its own logic for choosing a move.
     public abstract (int row, int col, string value) MakeMove(Board board, IDisplay display);
 }

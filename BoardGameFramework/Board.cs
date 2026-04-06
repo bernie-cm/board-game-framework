@@ -1,4 +1,4 @@
-namespace BoardGameFramework;
+namespace BoardGameFramework.Core;
 
 public abstract class Board {
   // Abstract class from whihc NTT, Gomoku and Notakto boards will inherit
@@ -24,13 +24,15 @@ public abstract class Board {
       return false;
     }
   }
-  public void PlaceMove(int row, int col, string value) {
+  // Marked virtual so subclasses like NumericalTicTacToeBoard can override it to run additional logic whenever a piece is placed
+  public virtual void PlaceMove(int row, int col, string value) {
     // This method simply validates first, before setting the grid location to the value
     if (IsValidMove(row, col)) {
       _grid[row, col] = value;
     }
   }
-  public void RevertMove(int row, int col) {
+  // Same as PlaceMove
+  public virtual void RevertMove(int row, int col) {
     // Method to undo PlaceMove action. This method is called by MoveCommand.Undo() to reverse a move
     _grid[row, col] = null;
   }

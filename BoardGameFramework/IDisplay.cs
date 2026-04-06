@@ -1,4 +1,4 @@
-namespace BoardGameFramework;
+namespace BoardGameFramework.Core;
 public interface IDisplay
 {
     /*
