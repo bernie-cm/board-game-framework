@@ -1,13 +1,11 @@
 using BoardGameFramework.Core;
-
 namespace BoardGameFramework.Commands;
 
 // Manages the undo and redo stacks for a game session using the Command pattern.
 // Every executed move is pushed onto the undo stack. When a move is undone it moves
 // to the redo stack, and when redone it moves back. Executing a new move clears the
 // redo stack because the previous future is no longer valid.
-public class HistoryManager
-{
+public class HistoryManager {
     private readonly Stack<ICommand> _undoStack = new Stack<ICommand>();
     private readonly Stack<ICommand> _redoStack = new Stack<ICommand>();
 
@@ -16,25 +14,20 @@ public class HistoryManager
 
     // Executes the command and pushes it onto the undo stack.
     // Clears the redo stack because branching from a previous state invalidates the saved future.
-    public void Execute(ICommand command)
-    {
+    public void Execute(ICommand command) {
         command.Execute();
         _undoStack.Push(command);
         _redoStack.Clear();
     }
-
     // Pops the most recent command off the undo stack, reverses it, and saves it for redo
-    public void Undo()
-    {
+    public void Undo() {
         if (!CanUndo()) return;
         var command = _undoStack.Pop();
         command.Undo();
         _redoStack.Push(command);
     }
-
     // Pops the most recently undone command off the redo stack and re-executes it
-    public void Redo()
-    {
+    public void Redo() {
         if (!CanRedo()) return;
         var command = _redoStack.Pop();
         command.Execute();
@@ -42,14 +35,12 @@ public class HistoryManager
     }
 
     // Wipes both stacks — called at the start of a new game to ensure there is no leftover history
-    public void Clear()
-    {
+    public void Clear() {
         _undoStack.Clear();
         _redoStack.Clear();
     }
 
     public IEnumerable<ICommand> GetUndoHistory() => _undoStack;
-
     // Returns the undo stack as move records (top → bottom order) for serialisation
     public List<MoveRecord> GetUndoStack() => _undoStack
         .Cast<MoveCommand>()
